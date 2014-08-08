@@ -50,9 +50,16 @@ switch nDims
         set(gca,'YTickLabel',[])
         colormap(cMap)
     case 2
+		% find decision boundary, center colormap around it
+		results = prtActor.run(prtActor.dataSet);
+		decider = prtDecisionBinaryMinPe; % can't use prtActor.internalDecider
+		decider = decider.train(results);
+		threshold = decider.threshold;
+		crange = threshold + min(max(results.X)-threshold,threshold-min(results.X))*[-1,1];
+		
         xx = reshape(linGrid(:,1),gridSize);
         yy = reshape(linGrid(:,2),gridSize);
-        imageHandle = imagesc(xx(1,:),yy(:,1),reshape(DS,gridSize));
+        imageHandle = imagesc(xx(1,:),yy(:,1),reshape(DS,gridSize),crange);
         colormap(cMap)
     case 3
         xx = reshape(linGrid(:,1),gridSize);

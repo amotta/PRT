@@ -27,7 +27,7 @@ classdef prtClassLibSvm < prtClass
     %         nu            - nu parameter (nu-SVM's)
     %         pEpsilon      - Loss function parameter (epsilon-SVMs)
     %         cachesize     - Memory cache in MB (can affect speed,
-    %                        computer dependent)
+    %                         computer dependent)
     %         eEpsilon      - Termination tolerance
     %         shrinking     - Use shrinking heuristic?
     %         probabilityEstimates - Output probability estimates?

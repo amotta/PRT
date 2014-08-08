@@ -2,7 +2,7 @@ classdef prtDecisionMap < prtDecision & prtActionBig
     % prtDecisionMap Maximum a-posteriori decision making
     %
     % prtDec = prtDecisionMap creates a prtDecisionBinaryMap
-    % object, which can be used to perform Maximu a-posteriori decions.
+    % object, which can be used to perform Maximum a-posteriori decions.
     %
     % prtDecision objects are intended to be used either as members of
     % prtAlgorithm or prtClass objects.

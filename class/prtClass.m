@@ -168,7 +168,7 @@ classdef prtClass < prtAction
             has = ~isempty(obj.internalDecider);
         end
         
-        function varargout = plot(self,options)
+        function varargout = plot(self,varargin)
             % PLOT  Plot the output confidence of a prtClass ds
             % 
             %   ds.plot() plots the output confidence of a prtClass
@@ -191,10 +191,7 @@ classdef prtClass < prtAction
                 self.internalDecider = prtDecisionMap;
 			end
            
-			if ~exist('options','var')
-				options = struct();
-			end
-            HandleStructure = plotBinaryClassifierConfidence(self,options); % This handles both the binary classifier confidence plot and binary and m-ary decision plots.
+			HandleStructure = plotBinaryClassifierConfidence(self,varargin{:}); % This handles both the binary classifier confidence plot and binary and m-ary decision plots.
            
             if ~isempty(self.dataSet) && ~isempty(self.dataSet.name)
                 title(sprintf('%s (%s)',self.name,self.dataSet.name));
@@ -433,19 +430,13 @@ classdef prtClass < prtAction
             OutputDataSet = run(Obj,prtDataSetClass(linGrid));
         end
         
-        function HandleStructure = plotBinaryClassifierConfidence(Obj,options)
+        function HandleStructure = plotBinaryClassifierConfidence(Obj,varargin)
             
-			if isfield(options,'upperBounds')
-				upperBounds = options.upperBounds;
-			else
-				upperBounds = [];
-			end
-			if isfield(options,'lowerBounds')
-				lowerBounds = options.lowerBounds;
-			else
-				lowerBounds = [];
-			end
-            [OutputDataSet, linGrid, gridSize] = runClassifierOnGrid(Obj,upperBounds,lowerBounds);
+			p = inputParser;
+			p.addParameter('upperBounds',[]);
+			p.addParameter('lowerBounds',[]);
+			p.parse(varargin{:});
+            [OutputDataSet, linGrid, gridSize] = runClassifierOnGrid(Obj,p.Results.upperBounds,p.Results.lowerBounds);
             
             if Obj.dataSetSummary.nClasses > 2
                 %internalDeciders* output the right colors:

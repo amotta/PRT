@@ -94,7 +94,7 @@ classdef prtDecisionBinaryMinPe < prtDecisionBinary
             [pf,pd,thresh] = prtScoreRoc(dataSet.getObservations,dataSet.getTargets);
             pe = prtUtilPfPd2Pe(pf,pd);
             [v,minPeIndex] = min(pe); %#ok<ASGLU>
-            Obj.threshold = thresh(minPeIndex);
+            Obj.threshold = mean(thresh(minPeIndex+[0,1]));
             Obj.classList = dataSet.uniqueClasses;
         end
     end
