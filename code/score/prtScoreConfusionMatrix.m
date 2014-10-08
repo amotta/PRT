@@ -1,5 +1,5 @@
 function varargout = prtScoreConfusionMatrix(guess, truth, possibleTruthValues, classNames)
-%[confMat,occurances] = prtScoreConfusionMatrix(guess,truth)
+% [confMat,occurances] = prtScoreConfusionMatrix(guess,truth)
 % prtScoreConfusionMatrix Plot or return the confusion matrix
 %
 %   CONFMAT = prtScoreConfusionMatrix(GUESS, TRUTH) returns the confusion matrix that
@@ -62,7 +62,7 @@ end
 assert(size(guess,2)==1,'guess should be a prtDataSet with 1 feature or a vector');
 
 % Parse 3rd and 4th inputs
-%% These inputs are used to 
+% These inputs are used to 
 if nargin < 3 || isempty(possibleTruthValues)
     % Nothing do to keep from above
     %uClassesTruth = possiblGuessValues;
@@ -144,8 +144,7 @@ varargout = {};
 if nargout 
     varargout = {confusionMat, occurances};
 else
-    %prtUtilPlotConfusionMatrix(bsxfun(@rdivide,confusionMat,occurances),guessClassNames,truthClassNames);
-    prtUtilPlotConfusionMatrix(confusionMat,guessClassNames,truthClassNames);
+    prtPlotUtilConfusionMatrix(confusionMat,guessClassNames,truthClassNames);
     
     pc = prtScorePercentCorrect(guess,truth);
     title(sprintf('%.2f%% Correct',pc*100));

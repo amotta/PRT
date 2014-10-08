@@ -1,8 +1,8 @@
-function varargout = prtUtilPlotRocConfidence(varargin)
-% PRSCOREROCCONFIDENCEPLOT Plot ROCs with confidence
+function varargout = prtPlotUtilRocConfidence(varargin)
+% prtPlotUtilRocConfidence Plot ROCs with confidence
 %
-% Syntax: prtUtilPlotRocConfidence(PF1,PD1,edgePds1,PF2,PD2,edgePds2,...)
-%         prtUtilPlotRocConfidence(PF1,PD1,edgePds1,'b',PF2,PD2,edgePds2,'r',...)
+% Syntax: prtPlotUtilRocConfidence(PF1,PD1,edgePds1,PF2,PD2,edgePds2,...)
+%         prtPlotUtilRocConfidence(PF1,PD1,edgePds1,'b',PF2,PD2,edgePds2,'r',...)
 %
 %   This is a little naive in that you cannot mix and match these two
 %   input styles.
@@ -25,7 +25,7 @@ function varargout = prtUtilPlotRocConfidence(varargin)
 %  Output = prtDataSetClass(Output,DS);
 %
 %  [pfSamples, pdMean, pdConfRegion, pds] = prtScoreRocBayesianBootstrap(Output.getObservations() ,Output.getTargets());
-%  prtUtilPlotRocConfidence(pfSamples,pdMean,pdConfRegion)
+%  prtPlotUtilRocConfidence(pfSamples,pdMean,pdConfRegion)
 
 % Copyright (c) 2013 New Folder Consulting
 %
@@ -55,7 +55,7 @@ faceAlphaValue = 0.4;
 PlotStruct = rocConfidencePlotInputParse(varargin{:});
 
 holdState = ishold;
-h = zeros(length(PlotStruct),2);
+h = prtUtilPreAllocateHandles(length(PlotStruct),2);
 
 % Plot all of the fills first
 for iPlot = 1:length(PlotStruct)

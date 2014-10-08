@@ -69,54 +69,6 @@ function varargout = prtScoreRocBayesianBootstrap(ds, y, nBootStrapSamples, nPfS
 % USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-
-
-% prtScoreRocBayesianBootstrap - Bayesian Boot strap an ROC curve
-%   Performs Bayesian boot strap sampling of an ROC curve and generates the
-%   100*(1-alpha) percent percentile uniform credible band. This is done
-%   following the methodology in:
-%
-%   Non-parametric estimation of ROC curve
-%   J. Gu, S. Ghosal, and A. Roy
-%   Statistics in Medicine, Vol. 27, 5407—5420, 2008.
-%   http://www4.stat.ncsu.edu/~ghosal/papers/ROCBB.pdf
-%
-% Syntax: prtScoreRocBayesianBootstrap(ds, y)
-%         prtScoreRocBayesianBootstrap(ds, y, nBootStrapSamples)
-%         prtScoreRocBayesianBootstrap(ds, y, nBootStrapSamples, nPfSamples)
-%         prtScoreRocBayesianBootstrap(ds, y, nBootStrapSamples, nPfSamples, alpha)
-%         [pfSamples, pdMean, pdConfRegion, bootStrappedPds] = prtScoreRocBayesianBootstrap(...)
-%
-%         Note: If no output arguments are requested the mean and credible 
-%               interval are plotted using prtUtilPlotRocConfidence()
-%
-% Inputs:
-%   ds - Decision statistics of detection algorithm
-%   y - Binary label vector of truth
-%   nBootStrapSamples - The number of boot strapped ROC curves used to
-%       calculated the mean and credible interval. (Default: 1000)
-%   nPfSamples - The number of samples of Probability of False alarm at
-%       with which to sample the ROC curve. (Default: 500)
-%   alpha - The size of the credible interval 100*(1-alpha) 
-%       (Default: 0.05 - Corresponding to a 95% credible band)
-%
-% Outputs:
-%   pfSamples - False alarm probabilities at which the bootstrapped ROC
-%       curves are evaluated
-%   pdMean - Mean of the bootstrapped ROC curves
-%   pdConfRegion - 100*(1-alpha) percent percentile uniform credible band
-%       reported as two ROC curves [upperPdCurve, lowerPdCurve]
-%   bootStrappedPds - All samples of the bootstrapped ROC curves
-%
-% Example
-%   % This simulates a GLRT in a noise noise situation;
-%   nSamplesEachHyp = 500;
-%   x = cat(1,2*randn(nSamplesEachHyp,1),randn(nSamplesEachHyp,1));
-%   y = cat(1,ones(nSamplesEachHyp,1),zeros(nSamplesEachHyp,1));
-%   ds = x.^2;
-%   prtScoreRocBayesianBootstrap(ds, y)
-
-
 [ds,y,classLabels] = prtUtilScoreParseFirstTwoInputs(ds,y);
 
 %% Default arguments
@@ -254,7 +206,7 @@ pdConfRegion = inverseLogistic(bsxfun(@plus,prctile(eta,100*[alpha/2, 1-alpha/2]
 
 %% Package Outputs
 if nargout == 0
-    prtUtilPlotRocConfidence(pfSamples,pdMean,pdConfRegion)
+    prtPlotUtilRocConfidence(pfSamples,pdMean,pdConfRegion)
 else
     varargout = {pfSamples, pdMean, pdConfRegion, pds};
 end

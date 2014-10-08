@@ -1,9 +1,9 @@
-function varargout = prtUtilPlotMatrixTable(X,cLim,cMap,num2strFormat,textCMap)
-% prtUtilPlotMatrixTable displays a matrix as a table. The table is actually an
+function varargout = prtPlotUtilMatrixTable(X,cLim,cMap,num2strFormat,textCMap)
+% prtPlotUtilMatrixTable displays a matrix as a table. The table is actually an
 %   image with lines between each pixel.
 %
 % Syntax: [axesHandle, textHandles, verticleLineHandles, horizontalLineHandles]
-%           = prtUtilPlotMatrixTable(X,cLim,cMap,num2strFormat,textCMap)
+%           = prtPlotUtilMatrixTable(X,cLim,cMap,num2strFormat,textCMap)
 %
 % Inputs:
 %   X - 2-D Matrix to plot
@@ -22,9 +22,9 @@ function varargout = prtUtilPlotMatrixTable(X,cLim,cMap,num2strFormat,textCMap)
 %   horizontalLineHandles
 %
 % Example:
-%   prtUtilPlotMatrixTable(rand(5),[0 1],summer(128),'%.2f',[0 0 0])
-%   prtUtilPlotMatrixTable(rand(5),[0 1],summer(128),'%.2f')
-%   prtUtilPlotMatrixTable(rand(5),[0 1],[1 1 1],[],[0 0 0])
+%   prtPlotUtilMatrixTable(rand(5),[0 1],summer(128),'%.2f',[0 0 0])
+%   prtPlotUtilMatrixTable(rand(5),[0 1],summer(128),'%.2f')
+%   prtPlotUtilMatrixTable(rand(5),[0 1],[1 1 1],[],[0 0 0])
 %
 % Other m-files required: none
 % Subfunctions: getBestFontSize
@@ -82,9 +82,9 @@ imageAxes = gca;
 imagesc(X,cLim);
 colormap(cMap);
 fontSize = max(getBestFontSize(imageAxes),1);
-textHandles = nan(size(X));
-verticleLineHandles = zeros(nRows,1);
-horizontalLineHandles = zeros(nCols,1);
+textHandles = prtUtilPreAllocateHandles(size(X));
+verticleLineHandles = prtUtilPreAllocateHandles(nRows,1);
+horizontalLineHandles = prtUtilPreAllocateHandles(nCols,1);
 hold on;
 
 [dontNeed, textCMapInds] = histc( (X-cLim(1))./(cLim(2)-cLim(1)) , linspace(0,1+eps,size(textCMap,1)+1)); %#ok<ASGLU>

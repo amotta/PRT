@@ -98,7 +98,7 @@ nFaSamples = pfSamples*nH0;
 
 %% Package Outputs
 if nargout == 0
-    prtUtilPlotRocConfidence(nFaSamples,pdMean,pdConfRegion)
+    prtPlotUtilRocConfidence(nFaSamples,pdMean,pdConfRegion)
 else
     varargout = {nFaSamples, pdMean, pdConfRegion, bootStrappedPds};
 end
