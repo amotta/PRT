@@ -89,16 +89,18 @@ classdef prtDataSetRegress < prtDataSetStandard
             
             holdState = get(gca,'nextPlot');
             
-            classColors = obj.plotOptions.colorsFunction(1);
+            classColors = obj.plotOptions.colorsFunction(obj.nTargetDimensions);
             markerSize = obj.plotOptions.symbolSize;
             lineWidth = obj.plotOptions.symbolLineWidth;
-            classSymbols = obj.plotOptions.symbolsFunction(1);
+            classSymbols = obj.plotOptions.symbolsFunction(obj.nTargetDimensions);
             
-            iPlot = 1;
-            classEdgeColor = obj.plotOptions.symbolEdgeModificationFunction(classColors(iPlot,:));
-            
-            h = plot(obj.getObservations(:,featureIndices),obj.getTargets, classSymbols(iPlot), 'MarkerFaceColor', classColors(iPlot,:), 'MarkerEdgeColor', classEdgeColor,'linewidth',lineWidth,'MarkerSize',markerSize);
-            
+            for iPlot = 1:obj.nTargetDimensions
+				classEdgeColor = obj.plotOptions.symbolEdgeModificationFunction(classColors(iPlot,:));
+
+				h(iPlot) = plot(obj.getObservations(:,featureIndices),obj.getTargets(:,iPlot), classSymbols(iPlot), 'MarkerFaceColor', classColors(iPlot,:), 'MarkerEdgeColor', classEdgeColor,'linewidth',lineWidth,'MarkerSize',markerSize);
+				hold on
+			end
+			
             set(gca,'nextPlot',holdState);
             
             % Set title

@@ -59,7 +59,11 @@ switch nDims
 		
         xx = reshape(linGrid(:,1),gridSize);
         yy = reshape(linGrid(:,2),gridSize);
-        imageHandle = imagesc(xx(1,:),yy(:,1),reshape(DS,gridSize),crange);
+		if all(isfinite(crange))
+			imageHandle = imagesc(xx(1,:),yy(:,1),reshape(DS,gridSize),crange);
+		else
+			imageHandle = imagesc(xx(1,:),yy(:,1),reshape(DS,gridSize));
+		end
         colormap(cMap)
     case 3
         xx = reshape(linGrid(:,1),gridSize);
