@@ -43,7 +43,7 @@ classdef prtPreProcTsne < prtPreProc
         
         function self = trainAction(self,dataSet)
             %
-            
+            self.initialDims = min(self.initialDims, dataSet.nFeatures);
             % Do nothing
         end
         

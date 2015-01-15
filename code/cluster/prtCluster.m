@@ -242,7 +242,32 @@ classdef prtCluster < prtAction
             end
         end
     end
-
+    methods (Hidden)
+        function [dsCentroids, centroidInds] = findCentroids(self, ds)
+            
+            if ~self.isTrained
+                self = self.train(ds);
+            end
+            dsOut = run(self, ds);
+            [~,assignedCluster] = max(dsOut.X,[],2);
+            
+            centroidInds = nan(length(self.nClusters),1);
+            for iCluster = 1:size(self.clusterCenters,1)
+                isThisCluster = assignedCluster == iCluster;
+                
+                isThisClusterDistance = sum(bsxfun(@minus, self.clusterCenters(iCluster,:), ds.X(isThisCluster,:)).^2,2);
+                
+                [~,isThisClusterMinInd] = min(isThisClusterDistance);
+                isThisClusterInds  = find(isThisCluster);
+                
+                centroidInds(iCluster) = isThisClusterInds(isThisClusterMinInd);
+            end
+                
+            dsCentroids = ds.retainObservations(centroidInds);
+        end
+    end 
+            
+    
     methods (Static, Hidden = true)
         function plotOptions = initializePlotOptions()            
             if ~isdeployed
