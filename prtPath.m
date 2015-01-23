@@ -1,8 +1,7 @@
 function output = prtPath(varargin)
 % prtPath Adds necessary directories for the PRT to your path.
-%
 
-% Copyright (c) 2014 CoVar Applied Technologies
+% Copyright (c) 2013 New Folder Consulting
 %
 % Permission is hereby granted, free of charge, to any person obtaining a
 % copy of this software and associated documentation files (the
@@ -23,52 +22,34 @@ function output = prtPath(varargin)
 % OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 % USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-
-
 if isdeployed
-    return;
-end
-startupCheck = true;
-if startupCheck
-    checkPrtInStartup;
+    return
 end
 
-addpath(fullfile(prtRoot,'util'));
+addpath(fullfile(prtRoot,'util')); % So we can call prtUtilGenCleanPath
 origPath = prtUtilGenCleanPath(prtRoot);
 addpath(origPath);
 
+addedDirs = cat(1,{prtRoot},strsplit(origPath,pathsep)');
+addedDirs = addedDirs(~cellfun(@isempty,addedDirs));
+
 for iArg = 1:length(varargin)
     cArg = varargin{iArg};
-    cDir = fullfile(prtRoot,cat(2,']',cArg));
-    assert(logical(exist(cDir,'file')),']%s is not a directory in %s',cArg,prtRoot);
-    P = prtUtilGenCleanPath(cDir,'removeDirStart',{'.'});
-    addpath(P);
-    origPath = cat(2,origPath,P);
+    anyWasFound = false;
+    for iDir = 1:length(addedDirs)
+        cDir = fullfile(addedDirs{iDir},cat(2,']',cArg));
+        wasFound = logical(exist(cDir,'file'));
+        anyWasFound = anyWasFound || wasFound;
+        if wasFound
+            P = prtUtilGenCleanPath(cDir,'removeDirStart',{'.'});
+            addpath(P);
+            origPath = cat(2,origPath,P);
+            addedDirs = cat(1,{prtRoot},strsplit(origPath,pathsep)');
+            addedDirs = addedDirs(~cellfun(@isempty,addedDirs));
+        end
+    end
+    assert(anyWasFound,']%s is not a sub-directory found in %s',cArg,prtRoot);
 end
 if nargout > 0
     output = origPath;
-end
-
-function checkPrtInStartup
-% checkPrtInStartup
-% Warn the user if the prtPath command isn't found in their startup.m file.
-%  In order for prtDoc, and the MATLAB Doc to work with the PRT, prtPath
-%  must be called in STARTUP, not after MATLAB has started.
-
-startupFile = which('startup.m');
-if isempty(startupFile)
-    h = warndlg('The M-file startup.m was not found on your MATLAB Path; to include all of the functionality of the PRT including HTML documentation, a startup.m file should include code to add the PRT to the MATLAB path. For more information about startup files, please see: http://www.mathworks.com/help/techdoc/ref/startup.html','prtPath: Not in startup.m');
-else
-    
-    startupCommand = sprintf('prtPath');
-    
-    fid = fopen(startupFile,'r');
-    s = fscanf(fid,'%c');
-    fclose(fid);
-    
-    if isempty(strfind(lower(s),lower(startupCommand)));
-        h = warndlg(sprintf('Your M-file startup.m does not seem to contain the command "%s"; to include all of the functionality of the PRT including HTML documentation, your startup.m file should include this command',startupCommand),'prtPath: Not in startup.m');
-        warning('prt:prtPath:missingCommand','Your M-file startup.m does not seem to contain the command "%s".  To include all of the functionality of the PRT including HTML documentation, your startup.m file should include this command',startupCommand);
-    end
 end
