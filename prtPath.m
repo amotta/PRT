@@ -26,8 +26,15 @@ if isdeployed
     return
 end
 
-addpath(fullfile(prtRoot,'util')); % So we can call prtUtilGenCleanPath (legacy)
-addpath(fullfile(prtRoot,'code','util')); % So we can call prtUtilGenCleanPath
+% So we can call prtUtilGenCleanPath (legacy)
+if isdir(fullfile(prtRoot,'util'))
+    addpath(fullfile(prtRoot,'util')); 
+end
+% So we can call prtUtilGenCleanPath
+if isdir(fullfile(prtRoot,'code','util'))
+    addpath(fullfile(prtRoot,'code','util')); 
+end
+
 origPath = prtUtilGenCleanPath(prtRoot);
 addpath(origPath);
 
