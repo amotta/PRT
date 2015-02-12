@@ -229,14 +229,20 @@ classdef prtDataTypeImage < prtUtilActionDataAccess
             switch lower(type)
                 case 'gray'
                     self.internalGrayData = self.gray;
+                    self.imageData = self.internalGrayData;
                 case 'hsv'
                     self.internalHsvData = self.hsv;
+                    self.imageData = self.internalHsvData;
                 case 'rgb'
                     self.internalRgbData = self.rgb;
+                    self.imageData = self.internalRgbData;
                 case 'lab'
                     self.internalLabData = self.lab;
+                    self.imageData = self.internalLabData;
                 case 'yuv'
                     self.internalYuvData = self.yuv;
+                    
+                    self.imageData = self.internalYuvData;
                 case 'all'
                     self.internalGrayData = self.gray;
                     self.internalRgbData = self.rgb;
@@ -244,9 +250,12 @@ classdef prtDataTypeImage < prtUtilActionDataAccess
                     self.internalLabData = self.lab;
                     self.internalYuvData = self.yuv;
                     
+                    self.imageData = self.internalRgbData;
                 otherwise
                     error('prtDataTypeImage:invalidSpec','The specified image format was not valid');
             end
+            self.imageType = type;
+            
         end
         
         function self = clearStorage(self)
