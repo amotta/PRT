@@ -88,7 +88,7 @@ if isempty(mexFile1) || isempty(mexFile2) || overRideBuild
 end
 
 % Combinator
-mex(fullfile(prtRoot,'+prtExternal','+combinator','cumsumall.cpp'));
+mex('-outdir',fullfile(prtRoot,'+prtExternal','+combinator'),'-output','cumsumall',fullfile(prtRoot,'+prtExternal','+combinator','cumsumall.cpp'));
 
 mexFile = which('prtRvUtilLogForwardsBackwards');
 if isempty(mexFile) || overRideBuild
